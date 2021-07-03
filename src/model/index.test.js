@@ -4,6 +4,7 @@ import rootReducer, {
   addColAfter,
   currentFocus,
   removeFocus,
+  initGrid,
 } from ".";
 
 describe("Spreadsheet App", () => {
@@ -262,5 +263,15 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[1].cols[1].focus).toBe(
       afterState.grid.rows[1].cols[1].focus
     );
+  });
+  it("should init the rows", () => {
+    const beforeState = undefined;
+    const numbreOfRows = 3;
+    const numberOfColumns = 5;
+    const action = initGrid(numbreOfRows, numberOfColumns);
+    const state = rootReducer(beforeState, action);
+    console.log("state", state);
+    expect(state.grid.rows.length).toBe(numbreOfRows);
+    expect(state.grid.rows[0].cols.length).toBe(numberOfColumns);
   });
 });

@@ -19,6 +19,10 @@ export const addColAfter = (col) => ({
   type: actions.ADD_COL_AFTER,
   payload: { col },
 });
+export const initGrid = (rows, cols) => ({
+  type: actions.INIT_GRID,
+  payload: { rows, cols },
+});
 export default combineReducers({ grid });
 // selectors
 export const selectRows = (state) => state.grid.rows;

@@ -33,6 +33,13 @@ const newRow = (proto, maxCols) => {
   }
   return arr;
 };
+const prepareRows = (payload) => {
+  const rows = [];
+  for (let i = 0; i < payload.rows; i++) {
+    rows.push({ ...defRow, cols: newRow(defCol, payload.cols) });
+  }
+  return rows;
+};
 export default function rows(state = [], action) {
   const { type, payload } = action;
   switch (type) {
@@ -56,6 +63,8 @@ export default function rows(state = [], action) {
         },
         ...state.slice(payload.row + 1),
       ];
+    case actions.INIT_GRID:
+      return prepareRows(payload);
     case actions.SET_FOCUS:
     case actions.REMOVE_FOCUS:
       return state.map((rowItem, currentRow) => {
