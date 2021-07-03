@@ -1,0 +1,10 @@
+.cell {
+  border: 1px solid black;
+  display: inline-block;
+}
+.cell textarea {
+  resize: none;
+  /*border: none;*/
+  margin: 0;
+  padding: 0;
+}

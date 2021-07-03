@@ -52,6 +52,32 @@ describe("Spreadsheet App", () => {
       afterState.grid.rows[0].cols.length
     );
   });
+  it("should add a row with no rows", () => {
+    // given
+    const beforeState = {
+      grid: {
+        focus: { row: 0, col: 0 },
+        rows: [],
+      },
+    };
+    const action = addRowAfter(0);
+    const afterState = {
+      grid: {
+        focus: { row: 0, col: 0 },
+        rows: [
+          {
+            cols: [],
+          },
+        ],
+      },
+    };
+    // when
+    const state = rootReducer(beforeState, action);
+    // then
+    expect(state.grid.rows[0].cols.length).toBe(
+      afterState.grid.rows[0].cols.length
+    );
+  });
   it("should add a column after first", () => {
     // given
     const beforeState = {
@@ -171,9 +197,9 @@ describe("Spreadsheet App", () => {
       },
     };
     // when
-    console.log(JSON.stringify(beforeState.grid.rows));
+    // console.log(JSON.stringify(beforeState.grid.rows));
     const state = rootReducer(beforeState, action);
-    console.log(JSON.stringify(state.grid.rows));
+    // console.log(JSON.stringify(state.grid.rows));
     // then
     expect(state.grid.rows.length).toBe(afterState.grid.rows.length);
     expect(state.grid.rows[0]).toEqual(beforeState.grid.rows[0]);

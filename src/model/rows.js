@@ -1,12 +1,12 @@
 import * as actions from "./action-types";
 const defCol = {
-  id: 0,
   width: 100,
   value: "",
   focus: false,
 };
 const defRow = {
   cols: [],
+  height: 50,
 };
 const setColFocus = (cols, col, focus) => {
   return cols.map((item, index) => {
