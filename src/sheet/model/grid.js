@@ -12,7 +12,6 @@ const defRow = {
 export default function grid(
   state = {
     focus: { row: 0, col: 0 },
-    maxCols: 1,
     rows: [defRow],
   },
   action
@@ -37,13 +36,16 @@ export default function grid(
       return item;
     });
   };
+  const maxCols = (state) => {
+    if (state.rows.length === 0) return 0;
+    return state.rows[0].cols.length;
+  };
   const genId = () => new Date().getTime();
   const { type, payload } = action;
   switch (type) {
     case actions.ADD_COL_AFTER:
       return {
         ...state,
-        maxCols: state.maxCols + 1,
         rows: state.rows.map((rowItem) => {
           return {
             ...rowItem,
@@ -62,32 +64,30 @@ export default function grid(
           ...state.rows.slice(0, payload.row + 1),
           {
             ...defRow,
-            cols: newRow(defCol, state.maxCols),
+            cols: newRow(defCol, maxCols(state)),
           },
           ...state.rows.slice(payload.row + 1),
         ],
       };
+    case actions.REMOVE_FOCUS:
     case actions.SET_FOCUS:
       return {
         ...state,
         rows: state.rows.map((rowItem, currentRow) => {
-          if (currentRow === state.focus.row) {
+          if (currentRow === payload.row) {
             return {
               ...rowItem,
-              cols: setColFocus(rowItem.cols, state.focus.col, false),
-            };
-          } else if (currentRow === payload.row) {
-            return {
-              ...rowItem,
-              cols: setColFocus(rowItem.cols, payload.col, true),
+              cols: setColFocus(rowItem.cols, payload.col, payload.focus),
             };
           } else {
             return rowItem;
           }
         }),
-        focus: payload,
+        focus: { row: payload.row, col: payload.col },
       };
     default:
       return state;
   }
 }
+export const selectCell = (state, row, col) => state.rows[row].cols[col];
+export const currentFocus = (state) => state.focus;

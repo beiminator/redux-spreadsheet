@@ -1,5 +1,10 @@
-import { createStore, isAsyncThunkAction } from "@reduxjs/toolkit";
-import rootReducer, { addRowAfter, setFocus, addColAfter } from ".";
+import rootReducer, {
+  addRowAfter,
+  setFocus,
+  addColAfter,
+  currentFocus,
+  removeFocus,
+} from ".";
 
 describe("Spreadsheet App", () => {
   it("should initialize state", () => {
@@ -9,7 +14,6 @@ describe("Spreadsheet App", () => {
     const afterState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 1,
         rows: [
           {
             cols: [],
@@ -27,7 +31,6 @@ describe("Spreadsheet App", () => {
     const beforeState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 0,
         rows: [
           {
             cols: [],
@@ -39,7 +42,6 @@ describe("Spreadsheet App", () => {
     const afterState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 1,
         rows: [
           {
             cols: [{ width: 100, value: "", focus: false }],
@@ -53,14 +55,12 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[0].cols.length).toEqual(
       afterState.grid.rows[0].cols.length
     );
-    expect(state.grid.maxCols).toEqual(afterState.grid.maxCols);
   });
   it("should add a column after first", () => {
     // given
     const beforeState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 2,
         rows: [
           {
             cols: [
@@ -87,7 +87,6 @@ describe("Spreadsheet App", () => {
     const afterState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 3,
         rows: [
           {
             cols: [
@@ -127,14 +126,12 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[2].cols.length).toEqual(
       afterState.grid.rows[2].cols.length
     );
-    expect(state.grid.maxCols).toEqual(afterState.grid.maxCols);
   });
   it("should add a row after 1st", () => {
     // given
     const beforeState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 2,
         rows: [
           {
             cols: [
@@ -155,7 +152,6 @@ describe("Spreadsheet App", () => {
     const afterState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 2,
         rows: [
           {
             cols: [
@@ -183,7 +179,6 @@ describe("Spreadsheet App", () => {
     //console.log(JSON.stringify(state.grid.rows));
     // then
     expect(state.grid.rows.length).toBe(afterState.grid.rows.length);
-    expect(state.grid.maxCols).toBe(beforeState.grid.maxCols);
     expect(state.grid.rows[0]).toEqual(beforeState.grid.rows[0]);
     expect(state.grid.rows[2]).toEqual(beforeState.grid.rows[1]);
   });
@@ -192,7 +187,6 @@ describe("Spreadsheet App", () => {
     const beforeState = {
       grid: {
         focus: { row: 0, col: 0 },
-        maxCols: 2,
         rows: [
           {
             cols: [
@@ -209,11 +203,14 @@ describe("Spreadsheet App", () => {
         ],
       },
     };
-    const action = setFocus(1, 1);
+    const focusOn = setFocus(1, 1);
+    const focusOff = removeFocus(
+      currentFocus(beforeState).row,
+      currentFocus(beforeState).col
+    );
     const afterState = {
       grid: {
         focus: { row: 1, col: 1 },
-        maxCols: 2,
         rows: [
           {
             cols: [
@@ -231,7 +228,11 @@ describe("Spreadsheet App", () => {
       },
     };
     // when
-    const state = rootReducer(beforeState, action);
+    const state1 = rootReducer(beforeState, focusOff);
+    const state = rootReducer(state1, focusOn);
+    console.log("beforeState", JSON.stringify(beforeState));
+    console.log("state1", JSON.stringify(state1));
+    console.log("state", JSON.stringify(state));
     // then
     expect(state.grid.focus).toEqual(afterState.grid.focus);
     expect(state.grid.rows[0].cols[0].focus).toBe(
