@@ -14,11 +14,7 @@ describe("Spreadsheet App", () => {
     const afterState = {
       grid: {
         focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [],
-          },
-        ],
+        rows: [],
       },
     };
     // when
@@ -175,8 +171,9 @@ describe("Spreadsheet App", () => {
       },
     };
     // when
+    console.log(JSON.stringify(beforeState.grid.rows));
     const state = rootReducer(beforeState, action);
-    //console.log(JSON.stringify(state.grid.rows));
+    console.log(JSON.stringify(state.grid.rows));
     // then
     expect(state.grid.rows.length).toBe(afterState.grid.rows.length);
     expect(state.grid.rows[0]).toEqual(beforeState.grid.rows[0]);
@@ -230,9 +227,7 @@ describe("Spreadsheet App", () => {
     // when
     const state1 = rootReducer(beforeState, focusOff);
     const state = rootReducer(state1, focusOn);
-    console.log("beforeState", JSON.stringify(beforeState));
-    console.log("state1", JSON.stringify(state1));
-    console.log("state", JSON.stringify(state));
+
     // then
     expect(state.grid.focus).toEqual(afterState.grid.focus);
     expect(state.grid.rows[0].cols[0].focus).toBe(
