@@ -1,6 +1,7 @@
 import * as actions from "./action-types";
 const defCol = {
   width: 100,
+  height: 50,
   value: "",
   focus: false,
 };

@@ -1,5 +1,5 @@
 import GridComponent from "./grid";
-import { selectRows, initGrid, addColAfter, addRowAfter } from "../../model";
+import { selectRows, initGrid } from "../../model";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 function Grid() {

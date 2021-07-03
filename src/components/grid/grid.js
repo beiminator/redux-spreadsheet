@@ -6,14 +6,7 @@ function Grid({ rows }) {
         return (
           <div style={{ height }} key={row}>
             {cols.map(({ width, focus }, col) => {
-              return (
-                <Cell
-                  row={row}
-                  col={col}
-                  dimensions={{ height, width }}
-                  focus={focus}
-                />
-              );
+              return <Cell row={row} col={col} />;
             })}
           </div>
         );

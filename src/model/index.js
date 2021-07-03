@@ -1,6 +1,6 @@
 import * as actions from "./action-types";
 import grid from "./grid";
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, createSelector } from "@reduxjs/toolkit";
 
 // action creators
 export const setFocus = (row, col) => ({
@@ -26,5 +26,6 @@ export const initGrid = (rows, cols) => ({
 export default combineReducers({ grid });
 // selectors
 export const selectRows = (state) => state.grid.rows;
-export const selectCell = (state, row, col) => state.grid.rows[row].cols[col];
+export const selectCell = (state, { row, col }) =>
+  state.grid.rows[row].cols[col];
 export const currentFocus = (state) => state.grid.focus;
