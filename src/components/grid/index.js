@@ -1,12 +1,12 @@
 import GridComponent from "./grid";
-import { selectRows, initGrid } from "../../model";
+import { selectRows, initData } from "../../model";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 function Grid() {
   const rows = useSelector(selectRows);
   const dispatch = useDispatch();
   const prepareGrid = () => {
-    dispatch(initGrid(3, 5));
+    dispatch(initData(3, 5));
   };
   useEffect(() => {
     prepareGrid();

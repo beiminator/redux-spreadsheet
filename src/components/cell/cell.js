@@ -1,23 +1,32 @@
 import "./cell.css";
-function Cell({ model, handleClick }) {
+function Cell({ model, handleClick, handleDoubleClick, handleChange }) {
   //("dimensions", dimensions);
-  const renderInner = (cell) => {
+  const renderInner = (model) => {
     if (model.focus) {
       return (
         <textarea
           autoFocus
-          className="cell"
-          style={{ height: model.height - 2, width: model.width - 2 }}
-        />
+          style={{
+            height: model.height - 2,
+            width: model.width - 2,
+          }}
+          onChange={handleChange}
+        >
+          {model.value}
+        </textarea>
       );
     } else {
-      return <span>Ciao Mondo!</span>;
+      return (
+        <span style={{ height: model.height - 2, width: model.width - 2 }}>
+          {model.value}
+        </span>
+      );
     }
   };
   return (
     <div
-      style={{ height: model.height, width: model.width }}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
       className="cell"
     >
       {renderInner(model)}

@@ -41,6 +41,36 @@ const prepareRows = (payload) => {
   }
   return rows;
 };
+const setValue = (state, payload) => {
+  /*
+  const rows1 = state.slice(0, payload.row);
+  const row = state[payload.row];
+  const rows2 = state.slice(payload.row + 1);
+  const cols1 = row.cols.slice(0, payload.col);
+  const col = row.cols[payload.col];
+  const cols2 = row.cols.slice(payload.col + 1);
+  const row_mody = {
+    ...state[payload.row],
+    cols: [
+      ...state[payload.row].cols.slice(0, payload.col),
+      { ...state[payload.row].cols[payload.col], value: payload.value },
+      ...state[payload.row].cols.slice(payload.col + 1),
+    ],
+  };
+  */
+  return [
+    ...state.slice(0, payload.row),
+    {
+      ...state[payload.row],
+      cols: [
+        ...state[payload.row].cols.slice(0, payload.col),
+        { ...state[payload.row].cols[payload.col], value: payload.value },
+        ...state[payload.row].cols.slice(payload.col + 1),
+      ],
+    },
+    ...state.slice(payload.row + 1),
+  ];
+};
 export default function rows(state = [], action) {
   const { type, payload } = action;
   switch (type) {
@@ -66,6 +96,8 @@ export default function rows(state = [], action) {
       ];
     case actions.INIT_GRID:
       return prepareRows(payload);
+    case actions.SET_VALUE:
+      return setValue(state, payload);
     case actions.SET_FOCUS:
     case actions.REMOVE_FOCUS:
       return state.map((rowItem, currentRow) => {

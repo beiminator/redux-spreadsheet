@@ -4,7 +4,8 @@ import rootReducer, {
   addColAfter,
   currentFocus,
   removeFocus,
-  initGrid,
+  initData,
+  setValue,
 } from ".";
 
 describe("Spreadsheet App", () => {
@@ -268,10 +269,22 @@ describe("Spreadsheet App", () => {
     const beforeState = undefined;
     const numbreOfRows = 3;
     const numberOfColumns = 5;
-    const action = initGrid(numbreOfRows, numberOfColumns);
+    const action = initData(numbreOfRows, numberOfColumns);
     const state = rootReducer(beforeState, action);
-    console.log("state", state);
+
     expect(state.grid.rows.length).toBe(numbreOfRows);
     expect(state.grid.rows[0].cols.length).toBe(numberOfColumns);
+  });
+  it("should set the value of a cell", () => {
+    const prepare = initData(2, 2);
+    const beforeState = rootReducer(undefined, prepare);
+
+    const row = 0;
+    const col = 1;
+    const value = "Ciao Ale!";
+    const action = setValue(row, col, value);
+    const state = rootReducer(beforeState, action);
+
+    expect(state.grid.rows[row].cols[col].value).toBe(value);
   });
 });

@@ -1,6 +1,6 @@
 import * as actions from "./action-types";
 import grid from "./grid";
-import { combineReducers, createSelector } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
 
 // action creators
 export const setFocus = (row, col) => ({
@@ -19,9 +19,13 @@ export const addColAfter = (col) => ({
   type: actions.ADD_COL_AFTER,
   payload: { col },
 });
-export const initGrid = (rows, cols) => ({
+export const initData = (rows, cols) => ({
   type: actions.INIT_GRID,
   payload: { rows, cols },
+});
+export const setValue = (row, col, value) => ({
+  type: actions.SET_VALUE,
+  payload: { row, col, value },
 });
 export default combineReducers({ grid });
 // selectors
