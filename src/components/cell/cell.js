@@ -1,23 +1,26 @@
 import "./cell.css";
-function Cell({ model, handleClick, handleDoubleClick, handleChange }) {
+function Cell({ cellModel, handleClick, handleDoubleClick, handleChange }) {
   //("dimensions", dimensions);
   const renderInner = (model) => {
-    if (model.focus) {
+    if (cellModel.focus) {
       return (
         <textarea
           autoFocus
           style={{
-            height: model.height - 2,
-            width: model.width - 2,
+            height: cellModel.height - 2,
+            width: cellModel.width - 2,
           }}
           onChange={handleChange}
-          value={model.value}
+          value={cellModel.value}
         />
       );
     } else {
       return (
-        <span style={{ height: model.height - 2, width: model.width - 2 }}>
-          {model.value}
+        <span
+          className={cellModel.selected ? "cell-selected" : ""}
+          style={{ height: cellModel.height - 2, width: cellModel.width - 2 }}
+        >
+          {cellModel.value}
         </span>
       );
     }
@@ -26,9 +29,9 @@ function Cell({ model, handleClick, handleDoubleClick, handleChange }) {
     <td
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
-      className="cell"
+      className={`cell ${cellModel.selected ? "cell-selected" : ""}`}
     >
-      {renderInner(model)}
+      {renderInner(cellModel)}
     </td>
   );
 }

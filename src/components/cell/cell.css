@@ -13,11 +13,19 @@
   float: left;
   margin: 0;
 }
+.cell-selected {
+  background-color: aquamarine;
+}
 
 .marker {
   height: 20px;
   width: 20px;
+  color: black;
   background-color: lightgray;
   border: 1px solid black;
   text-align: center;
+}
+.marker-selected {
+  color: white;
+  background-color: darkcyan;
 }

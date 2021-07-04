@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  currentFocus,
+  getFocus,
   removeFocus,
   selectCell,
   setFocus,
   setValue,
   cellDimensions,
+  thereIsFocus,
+  markCellAsSelected,
 } from "../../model";
 import CellComponent from "./cell";
 
@@ -14,14 +16,18 @@ function Cell({ row, col }) {
   const dimensions = useSelector((state) =>
     cellDimensions(state, { row, col })
   );
-  const getFocus = useSelector(currentFocus);
+  const currentFocus = useSelector(getFocus);
+  const gridHasFocus = useSelector(thereIsFocus);
   const dispatch = useDispatch();
   const handleClick = () => {
-    if (row !== getFocus.row || col !== getFocus.col)
-      dispatch(removeFocus(getFocus.row, getFocus.col));
+    if (row !== currentFocus.row || col !== currentFocus.col)
+      dispatch(removeFocus(currentFocus.row, currentFocus.col));
+    if (!gridHasFocus) {
+      dispatch(markCellAsSelected(row, col));
+    }
   };
   const handleDoubleClick = () => {
-    dispatch(removeFocus(getFocus.row, getFocus.col));
+    dispatch(removeFocus(currentFocus.row, currentFocus.col));
     dispatch(setFocus(row, col));
   };
   const handleChange = (e) => {
@@ -29,7 +35,11 @@ function Cell({ row, col }) {
   };
   return (
     <CellComponent
-      model={{ ...cell, height: dimensions.height, width: dimensions.width }}
+      cellModel={{
+        ...cell,
+        height: dimensions.height,
+        width: dimensions.width,
+      }}
       handleClick={handleClick}
       handleDoubleClick={handleDoubleClick}
       handleChange={handleChange}

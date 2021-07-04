@@ -12,6 +12,13 @@ export default function rowMarkers(state = [], action) {
         defRowMarker,
         ...state.slice(payload.row),
       ];
+    case actions.SELECT_CELL:
+    case actions.UNSELECT_CELL:
+      return [
+        ...state.slice(0, payload.row),
+        { ...state[payload.row], selected: payload.selected },
+        ...state.slice(payload.row + 1),
+      ];
     case actions.INIT_GRID:
       return Array.apply(null, { length: payload.rows }).map(
         () => defRowMarker

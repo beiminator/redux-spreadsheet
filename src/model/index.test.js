@@ -2,10 +2,12 @@ import rootReducer, {
   addRowAfter,
   setFocus,
   addColAfter,
-  currentFocus,
+  getFocus,
   removeFocus,
   initData,
   setValue,
+  markCellAsSelected,
+  markCellAsNotSelected,
 } from ".";
 import { NO_FOCUS } from "./focus";
 
@@ -110,8 +112,8 @@ describe("Spreadsheet App", () => {
     const beforeState = rootReducer(beforeState1, focusOn);
 
     const focusOff = removeFocus(
-      currentFocus(beforeState).row,
-      currentFocus(beforeState).col
+      getFocus(beforeState).row,
+      getFocus(beforeState).col
     );
 
     // when
@@ -129,8 +131,8 @@ describe("Spreadsheet App", () => {
     const beforeState = rootReducer(undefined, prepare);
     const focusOn = setFocus(1, 1);
     const focusOff = removeFocus(
-      currentFocus(beforeState).row,
-      currentFocus(beforeState).col
+      getFocus(beforeState).row,
+      getFocus(beforeState).col
     );
     const expectedNewFocus = { row: 1, col: 1 };
     // when
@@ -154,5 +156,35 @@ describe("Spreadsheet App", () => {
     const state = rootReducer(beforeState, action);
 
     expect(state.grid.rows[row].cols[col].value).toBe(value);
+  });
+
+  it("should select a cell", () => {
+    const prepare = initData(2, 2);
+    const beforeState = rootReducer(undefined, prepare);
+
+    const row = 0;
+    const col = 1;
+
+    const action = markCellAsSelected(row, col);
+    const state = rootReducer(beforeState, action);
+
+    expect(state.grid.rows[row].cols[col].selected).toBe(true);
+    expect(state.grid.rowMarkers[row].selected).toBe(true);
+    expect(state.grid.colMarkers[col].selected).toBe(true);
+  });
+  it("should unselect a selected cell", () => {
+    const prepare = initData(2, 2);
+    const beforeState1 = rootReducer(undefined, prepare);
+    const row = 0;
+    const col = 1;
+    const selectCell = markCellAsSelected(row, col);
+    const beforeState = rootReducer(beforeState1, selectCell);
+
+    const action = markCellAsNotSelected(row, col);
+    const state = rootReducer(beforeState, action);
+
+    expect(state.grid.rows[row].cols[col].selected).toBe(false);
+    expect(state.grid.rowMarkers[row].selected).toBe(false);
+    expect(state.grid.colMarkers[col].selected).toBe(false);
   });
 });

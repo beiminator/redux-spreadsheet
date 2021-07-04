@@ -28,7 +28,17 @@ export const setValue = (row, col, value) => ({
   type: actions.SET_VALUE,
   payload: { row, col, value },
 });
+export const markCellAsSelected = (row, col) => ({
+  type: actions.SELECT_CELL,
+  payload: { row, col, selected: true },
+});
+export const markCellAsNotSelected = (row, col) => ({
+  type: actions.UNSELECT_CELL,
+  payload: { row, col, selected: false },
+});
+
 export default combineReducers({ grid });
+
 // selectors
 export const selectRows = (state) => state.grid.rows;
 export const selectCell = (state, { row, col }) =>
@@ -39,7 +49,9 @@ export const cellDimensions = (state, { row, col }) => ({
 });
 export const rowHeights = (state) =>
   state.grid.rowMarkers.map((marker) => marker.height);
-export const currentFocus = (state) => state.grid.focus;
+export const selectRowMarker = (state, { row }) => state.grid.rowMarkers[row];
+export const selectColMarker = (state, { col }) => state.grid.colMarkers[col];
+export const getFocus = (state) => state.grid.focus;
 export const maxCols = (state) =>
   typeof state.grid.colMarkers !== "undefined" &&
   state.grid.colMarkers.length > 0

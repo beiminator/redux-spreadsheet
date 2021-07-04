@@ -19,7 +19,7 @@ function Grid({ rows }) {
         {rows.map(({ cols }, row) => {
           return (
             <tr style={{ height: heights[row] }} key={"R1_" + row}>
-              <RowMarker key={"RM_" + row} text={row + 1} />
+              <RowMarker key={"RM_" + row} text={row + 1} row={row} />
               {cols.map((_, col) => {
                 return (
                   <Cell row={row} col={col} key={"C1_" + row + "_" + col} />

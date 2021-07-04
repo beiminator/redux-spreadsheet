@@ -1,6 +1,9 @@
-function RowMarker({ style, text }) {
+function RowMarker({ markerModel, style, text }) {
   return (
-    <td className="marker" style={style}>
+    <td
+      className={`marker ${markerModel.selected ? "marker-selected" : ""}`}
+      style={style}
+    >
       {text}
     </td>
   );

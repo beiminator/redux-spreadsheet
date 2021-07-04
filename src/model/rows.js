@@ -12,7 +12,7 @@ const setColFocus = (cols, col, focus) => {
     if (index === col) {
       return {
         ...item,
-        focus: focus,
+        focus,
       };
     }
     return item;
@@ -39,34 +39,32 @@ const prepareRows = (payload) => {
   }
   return rows;
 };
-const setValue = (state, payload) => {
-  /*
-  const rows1 = state.slice(0, payload.row);
-  const row = state[payload.row];
-  const rows2 = state.slice(payload.row + 1);
-  const cols1 = row.cols.slice(0, payload.col);
-  const col = row.cols[payload.col];
-  const cols2 = row.cols.slice(payload.col + 1);
-  const row_mody = {
-    ...state[payload.row],
-    cols: [
-      ...state[payload.row].cols.slice(0, payload.col),
-      { ...state[payload.row].cols[payload.col], value: payload.value },
-      ...state[payload.row].cols.slice(payload.col + 1),
-    ],
-  };
-  */
+const setValue = (state, { row, col, value }) => {
   return [
-    ...state.slice(0, payload.row),
+    ...state.slice(0, row),
     {
-      ...state[payload.row],
+      ...state[row],
       cols: [
-        ...state[payload.row].cols.slice(0, payload.col),
-        { ...state[payload.row].cols[payload.col], value: payload.value },
-        ...state[payload.row].cols.slice(payload.col + 1),
+        ...state[row].cols.slice(0, col),
+        { ...state[row].cols[col], value },
+        ...state[row].cols.slice(col + 1),
       ],
     },
-    ...state.slice(payload.row + 1),
+    ...state.slice(row + 1),
+  ];
+};
+const setSelected = (state, { row, col, selected }) => {
+  return [
+    ...state.slice(0, row),
+    {
+      ...state[row],
+      cols: [
+        ...state[row].cols.slice(0, col),
+        { ...state[row].cols[col], selected },
+        ...state[row].cols.slice(col + 1),
+      ],
+    },
+    ...state.slice(row + 1),
   ];
 };
 export default function rows(state = [], action) {
@@ -96,6 +94,9 @@ export default function rows(state = [], action) {
       return prepareRows(payload);
     case actions.SET_VALUE:
       return setValue(state, payload);
+    case actions.SELECT_CELL:
+    case actions.UNSELECT_CELL:
+      return setSelected(state, payload);
     case actions.SET_FOCUS:
     case actions.REMOVE_FOCUS:
       return state.map((rowItem, currentRow) => {
