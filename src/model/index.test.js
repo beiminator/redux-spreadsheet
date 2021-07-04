@@ -10,6 +10,7 @@ import rootReducer, {
   markRangeAsNotSelected,
 } from ".";
 import { NO_FOCUS } from "./focus";
+import { NO_RANGE } from "./range";
 
 describe("Spreadsheet App", () => {
   it("should init the grid", () => {
@@ -164,6 +165,7 @@ describe("Spreadsheet App", () => {
 
     const row = 0;
     const col = 1;
+    const expectedRange = { row1: 0, col1: 1, row2: 0, col2: 1 };
 
     const action = markCellAsSelected(row, col);
     const state = rootReducer(beforeState, action);
@@ -171,6 +173,7 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[row].cols[col].selected).toBe(true);
     expect(state.grid.rowMarkers[row].selected).toBe(true);
     expect(state.grid.colMarkers[col].selected).toBe(true);
+    expect(state.grid.range).toEqual(expectedRange);
   });
   it("should unselect a selected cell", () => {
     const prepare = initData(2, 2);
@@ -186,5 +189,6 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[row].cols[col].selected).toBe(false);
     expect(state.grid.rowMarkers[row].selected).toBe(false);
     expect(state.grid.colMarkers[col].selected).toBe(false);
+    expect(state.grid.range).toEqual(NO_RANGE);
   });
 });

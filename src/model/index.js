@@ -62,5 +62,10 @@ export const maxCols = (state) =>
   state.grid.colMarkers.length > 0
     ? state.grid.colMarkers.length
     : 0;
+export const maxRows = (state) =>
+  typeof state.grid.rowMarkers !== "undefined" &&
+  state.grid.rowMarkers.length > 0
+    ? state.grid.rowMarkers.length
+    : 0;
 export const thereIsFocus = (state) =>
   state.grid.focus.row > NO_FOCUS.row && state.grid.focus.col > NO_FOCUS.col;
