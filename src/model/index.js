@@ -1,6 +1,7 @@
 import * as actions from "./action-types";
 import grid from "./grid";
 import { combineReducers } from "@reduxjs/toolkit";
+import { NO_FOCUS } from "./focus";
 
 // action creators
 export const setFocus = (row, col) => ({
@@ -34,8 +35,9 @@ export const selectCell = (state, { row, col }) =>
   state.grid.rows[row].cols[col];
 export const currentFocus = (state) => state.grid.focus;
 export const maxCols = (state) =>
-  typeof state.grid.rows !== "undefined" &&
-  state.grid.rows.length > 0 &&
-  typeof state.grid.rows[0].cols !== "undefined"
-    ? state.grid.rows[0].cols.length
+  typeof state.grid.colMarkers !== "undefined" &&
+  state.grid.colMarkers.length > 0
+    ? state.grid.colMarkers.length
     : 0;
+export const thereIsFocus = (state) =>
+  state.grid.focus.row > NO_FOCUS.row && state.grid.focus.col > NO_FOCUS.col;

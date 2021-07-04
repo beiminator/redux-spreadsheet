@@ -7,61 +7,39 @@ import rootReducer, {
   initData,
   setValue,
 } from ".";
+import { NO_FOCUS } from "./focus";
 
 describe("Spreadsheet App", () => {
-  it("should initialize state", () => {
-    // given
+  it("should init the grid", () => {
     const beforeState = undefined;
-    const action = { type: "ANY_ACTION" };
-    const afterState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [],
-      },
-    };
-    // when
+    const numbreOfRows = 3;
+    const numberOfColumns = 5;
+    const action = initData(numbreOfRows, numberOfColumns);
     const state = rootReducer(beforeState, action);
-    // then
-    expect(state).toEqual(afterState);
+
+    expect(state.grid.rows.length).toBe(numbreOfRows);
+    expect(state.grid.rows[0].cols.length).toBe(numberOfColumns);
   });
+
   it("should add a column with no columns", () => {
     // given
-    const beforeState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [],
-          },
-        ],
-      },
-    };
+    const rows = 1;
+    const cols = 0;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
     const action = addColAfter(0);
-    const afterState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [{ width: 100, value: "", focus: false }],
-          },
-        ],
-      },
-    };
+    const expectedCols = 1;
     // when
     const state = rootReducer(beforeState, action);
     // then
-    expect(state.grid.rows[0].cols.length).toEqual(
-      afterState.grid.rows[0].cols.length
-    );
+    expect(state.grid.rows[0].cols.length).toBe(expectedCols);
   });
   it("should add a row with no rows", () => {
     // given
-    const beforeState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [],
-      },
-    };
+    const rows = 0;
+    const cols = 0;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
     const action = addRowAfter(0);
     const afterState = {
       grid: {
@@ -82,199 +60,89 @@ describe("Spreadsheet App", () => {
   });
   it("should add a column after first", () => {
     // given
-    const beforeState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 1, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 2, width: 100, value: "", focus: false },
-              { id: 3, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 4, width: 100, value: "", focus: false },
-              { id: 5, width: 100, value: "", focus: false },
-            ],
-          },
-        ],
-      },
-    };
+    const rows = 3;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
     const action = addColAfter(0);
-    const afterState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 1, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 2, width: 100, value: "", focus: false },
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 3, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 4, width: 100, value: "", focus: false },
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 5, width: 100, value: "", focus: false },
-            ],
-          },
-        ],
-      },
-    };
+    const expectedCols = 3;
+
     // when
     const state = rootReducer(beforeState, action);
     // then
-    expect(state.grid.rows[0].cols.length).toEqual(
-      afterState.grid.rows[0].cols.length
-    );
+    expect(state.grid.rows[0].cols.length).toBe(expectedCols);
     expect(state.grid.rows[0].cols[0]).toBe(beforeState.grid.rows[0].cols[0]);
     expect(state.grid.rows[0].cols[2]).toBe(beforeState.grid.rows[0].cols[1]);
-    expect(state.grid.rows[1].cols.length).toEqual(
-      afterState.grid.rows[1].cols.length
-    );
-    expect(state.grid.rows[2].cols.length).toEqual(
-      afterState.grid.rows[2].cols.length
-    );
+    expect(state.grid.rows[1].cols.length).toBe(expectedCols);
+    expect(state.grid.rows[2].cols.length).toBe(expectedCols);
+    expect(state.grid.colMarkers.length).toBe(expectedCols);
+    expect(state.grid.colMarkers[0]).toBe(beforeState.grid.colMarkers[0]);
+    expect(state.grid.colMarkers[2]).toBe(beforeState.grid.colMarkers[1]);
   });
   it("should add a row after 1st", () => {
     // given
-    const beforeState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 1, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 2, width: 100, value: "", focus: false },
-              { id: 3, width: 100, value: "", focus: false },
-            ],
-          },
-        ],
-      },
-    };
+    const rows = 2;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
     const action = addRowAfter(0);
-    const afterState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [
-              { width: 100, value: "", focus: false },
-              { width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { width: 100, value: "", focus: false },
-              { width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { width: 100, value: "", focus: false },
-              { width: 100, value: "", focus: false },
-            ],
-          },
-        ],
-      },
-    };
+    const expectedRows = 3;
+
     // when
     // console.log(JSON.stringify(beforeState.grid.rows));
     const state = rootReducer(beforeState, action);
     // console.log(JSON.stringify(state.grid.rows));
     // then
-    expect(state.grid.rows.length).toBe(afterState.grid.rows.length);
+    expect(state.grid.rows.length).toBe(expectedRows);
     expect(state.grid.rows[0]).toEqual(beforeState.grid.rows[0]);
     expect(state.grid.rows[2]).toEqual(beforeState.grid.rows[1]);
+    expect(state.grid.rowMarkers.length).toBe(expectedRows);
+    expect(state.grid.rowMarkers[0]).toBe(beforeState.grid.rowMarkers[0]);
+    expect(state.grid.rowMarkers[2]).toBe(beforeState.grid.rowMarkers[1]);
+  });
+  it("should remove focus from a cell", () => {
+    // given
+    const rows = 2;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState1 = rootReducer(undefined, prepare);
+    const focusOn = setFocus(1, 1);
+    const beforeState = rootReducer(beforeState1, focusOn);
+
+    const focusOff = removeFocus(
+      currentFocus(beforeState).row,
+      currentFocus(beforeState).col
+    );
+
+    // when
+    const state = rootReducer(beforeState, focusOff);
+
+    // then
+    expect(state.grid.focus).toEqual(NO_FOCUS);
+    expect(state.grid.rows[1].cols[1].focus).toBe(false);
   });
   it("should set focus on a cell", () => {
     // given
-    const beforeState = {
-      grid: {
-        focus: { row: 0, col: 0 },
-        rows: [
-          {
-            cols: [
-              { id: 0, width: 100, value: "", focus: true },
-              { id: 1, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 2, width: 100, value: "", focus: false },
-              { id: 3, width: 100, value: "", focus: false },
-            ],
-          },
-        ],
-      },
-    };
+    const rows = 2;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
     const focusOn = setFocus(1, 1);
     const focusOff = removeFocus(
       currentFocus(beforeState).row,
       currentFocus(beforeState).col
     );
-    const afterState = {
-      grid: {
-        focus: { row: 1, col: 1 },
-        rows: [
-          {
-            cols: [
-              { id: 0, width: 100, value: "", focus: false },
-              { id: 1, width: 100, value: "", focus: false },
-            ],
-          },
-          {
-            cols: [
-              { id: 2, width: 100, value: "", focus: false },
-              { id: 3, width: 100, value: "", focus: true },
-            ],
-          },
-        ],
-      },
-    };
+    const expectedNewFocus = { row: 1, col: 1 };
     // when
     const state1 = rootReducer(beforeState, focusOff);
     const state = rootReducer(state1, focusOn);
 
     // then
-    expect(state.grid.focus).toEqual(afterState.grid.focus);
-    expect(state.grid.rows[0].cols[0].focus).toBe(
-      afterState.grid.rows[0].cols[0].focus
-    );
-    expect(state.grid.rows[1].cols[1].focus).toBe(
-      afterState.grid.rows[1].cols[1].focus
-    );
+    expect(state.grid.focus).toEqual(expectedNewFocus);
+    expect(state.grid.rows[0].cols[0].focus).toBe(false);
+    expect(state.grid.rows[1].cols[1].focus).toBe(true);
   });
-  it("should init the rows", () => {
-    const beforeState = undefined;
-    const numbreOfRows = 3;
-    const numberOfColumns = 5;
-    const action = initData(numbreOfRows, numberOfColumns);
-    const state = rootReducer(beforeState, action);
 
-    expect(state.grid.rows.length).toBe(numbreOfRows);
-    expect(state.grid.rows[0].cols.length).toBe(numberOfColumns);
-  });
   it("should set the value of a cell", () => {
     const prepare = initData(2, 2);
     const beforeState = rootReducer(undefined, prepare);

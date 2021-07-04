@@ -4,6 +4,7 @@ const defCol = {
   height: 50,
   value: "",
   focus: false,
+  selected: false,
 };
 const defRow = {
   cols: [],
