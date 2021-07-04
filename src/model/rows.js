@@ -95,8 +95,20 @@ export default function rows(state = [], action) {
     case actions.SET_VALUE:
       return setValue(state, payload);
     case actions.SELECT_CELL:
-    case actions.UNSELECT_CELL:
-      return setSelected(state, payload);
+    case actions.SELECT_RANGE:
+    case actions.UNSELECT_RANGE:
+      return state.map((rowItem, row) =>
+        payload.row1 <= row && row <= payload.row2
+          ? {
+              ...rowItem,
+              cols: rowItem.cols.map((colItem, col) =>
+                payload.col1 <= col && col <= payload.col2
+                  ? { ...colItem, selected: payload.selected }
+                  : colItem
+              ),
+            }
+          : rowItem
+      );
     case actions.SET_FOCUS:
     case actions.REMOVE_FOCUS:
       return state.map((rowItem, currentRow) => {

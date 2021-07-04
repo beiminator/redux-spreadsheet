@@ -13,12 +13,13 @@ export default function rowMarkers(state = [], action) {
         ...state.slice(payload.row),
       ];
     case actions.SELECT_CELL:
-    case actions.UNSELECT_CELL:
-      return [
-        ...state.slice(0, payload.row),
-        { ...state[payload.row], selected: payload.selected },
-        ...state.slice(payload.row + 1),
-      ];
+    case actions.SELECT_RANGE:
+    case actions.UNSELECT_RANGE:
+      return state.map((item, row) =>
+        payload.row1 <= row && row <= payload.row2
+          ? { ...item, selected: payload.selected }
+          : item
+      );
     case actions.INIT_GRID:
       return Array.apply(null, { length: payload.rows }).map(
         () => defRowMarker

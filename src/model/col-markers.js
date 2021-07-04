@@ -13,12 +13,13 @@ export default function colMarkers(state = [], action) {
         ...state.slice(payload.col),
       ];
     case actions.SELECT_CELL:
-    case actions.UNSELECT_CELL:
-      return [
-        ...state.slice(0, payload.col),
-        { ...state[payload.col], selected: payload.selected },
-        ...state.slice(payload.col + 1),
-      ];
+    case actions.SELECT_RANGE:
+    case actions.UNSELECT_RANGE:
+      return state.map((item, col) =>
+        payload.col1 <= col && col <= payload.col2
+          ? { ...item, selected: payload.selected }
+          : item
+      );
     case actions.INIT_GRID:
       return Array.apply(null, { length: payload.cols }).map(
         () => defColMarker

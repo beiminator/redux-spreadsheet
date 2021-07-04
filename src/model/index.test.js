@@ -7,7 +7,7 @@ import rootReducer, {
   initData,
   setValue,
   markCellAsSelected,
-  markCellAsNotSelected,
+  markRangeAsNotSelected,
 } from ".";
 import { NO_FOCUS } from "./focus";
 
@@ -180,7 +180,7 @@ describe("Spreadsheet App", () => {
     const selectCell = markCellAsSelected(row, col);
     const beforeState = rootReducer(beforeState1, selectCell);
 
-    const action = markCellAsNotSelected(row, col);
+    const action = markRangeAsNotSelected(row, col, row, col);
     const state = rootReducer(beforeState, action);
 
     expect(state.grid.rows[row].cols[col].selected).toBe(false);

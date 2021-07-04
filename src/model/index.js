@@ -30,11 +30,15 @@ export const setValue = (row, col, value) => ({
 });
 export const markCellAsSelected = (row, col) => ({
   type: actions.SELECT_CELL,
-  payload: { row, col, selected: true },
+  payload: { row1: row, col1: col, row2: row, col2: col, selected: true },
 });
-export const markCellAsNotSelected = (row, col) => ({
-  type: actions.UNSELECT_CELL,
-  payload: { row, col, selected: false },
+export const markRangeAsSelected = (row1, col1, row2, col2) => ({
+  type: actions.SELECT_CELL,
+  payload: { row1, col1, row2, col2, selected: true },
+});
+export const markRangeAsNotSelected = (row1, col1, row2, col2) => ({
+  type: actions.UNSELECT_RANGE,
+  payload: { row1, col1, row2, col2, selected: false },
 });
 
 export default combineReducers({ grid });
@@ -52,6 +56,7 @@ export const rowHeights = (state) =>
 export const selectRowMarker = (state, { row }) => state.grid.rowMarkers[row];
 export const selectColMarker = (state, { col }) => state.grid.colMarkers[col];
 export const getFocus = (state) => state.grid.focus;
+export const getRange = (state) => state.grid.range;
 export const maxCols = (state) =>
   typeof state.grid.colMarkers !== "undefined" &&
   state.grid.colMarkers.length > 0

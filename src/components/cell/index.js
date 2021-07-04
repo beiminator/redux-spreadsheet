@@ -8,6 +8,8 @@ import {
   cellDimensions,
   thereIsFocus,
   markCellAsSelected,
+  getRange,
+  markRangeAsNotSelected,
 } from "../../model";
 import CellComponent from "./cell";
 
@@ -18,11 +20,13 @@ function Cell({ row, col }) {
   );
   const currentFocus = useSelector(getFocus);
   const gridHasFocus = useSelector(thereIsFocus);
+  const csr = useSelector(getRange);
   const dispatch = useDispatch();
   const handleClick = () => {
     if (row !== currentFocus.row || col !== currentFocus.col)
       dispatch(removeFocus(currentFocus.row, currentFocus.col));
     if (!gridHasFocus) {
+      dispatch(markRangeAsNotSelected(csr.row1, csr.col1, csr.row2, csr.col2));
       dispatch(markCellAsSelected(row, col));
     }
   };

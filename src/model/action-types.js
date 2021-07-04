@@ -5,4 +5,5 @@ export const ADD_COL_AFTER = "ADD_COL_AFTER";
 export const INIT_GRID = "INIT_GRID";
 export const SET_VALUE = "SET_VALUE";
 export const SELECT_CELL = "SELECT_CELL";
-export const UNSELECT_CELL = "SELECT_CELL";
+export const SELECT_RANGE = "SELECT_RANGE";
+export const UNSELECT_RANGE = "UNSELECT_RANGE";
