@@ -13,7 +13,8 @@ function Cell({ row, col }) {
   const getFocus = useSelector(currentFocus);
   const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(removeFocus(getFocus.row, getFocus.col));
+    if (row !== getFocus.row || col !== getFocus.col)
+      dispatch(removeFocus(getFocus.row, getFocus.col));
   };
   const handleDoubleClick = () => {
     dispatch(removeFocus(getFocus.row, getFocus.col));

@@ -11,9 +11,8 @@ function Cell({ model, handleClick, handleDoubleClick, handleChange }) {
             width: model.width - 2,
           }}
           onChange={handleChange}
-        >
-          {model.value}
-        </textarea>
+          value={model.value}
+        />
       );
     } else {
       return (
@@ -24,13 +23,13 @@ function Cell({ model, handleClick, handleDoubleClick, handleChange }) {
     }
   };
   return (
-    <div
+    <td
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
       className="cell"
     >
       {renderInner(model)}
-    </div>
+    </td>
   );
 }
 

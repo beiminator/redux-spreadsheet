@@ -33,3 +33,9 @@ export const selectRows = (state) => state.grid.rows;
 export const selectCell = (state, { row, col }) =>
   state.grid.rows[row].cols[col];
 export const currentFocus = (state) => state.grid.focus;
+export const maxCols = (state) =>
+  typeof state.grid.rows !== "undefined" &&
+  state.grid.rows.length > 0 &&
+  typeof state.grid.rows[0].cols !== "undefined"
+    ? state.grid.rows[0].cols.length
+    : 0;
