@@ -1,6 +1,6 @@
 import * as actions from "./action-types";
 const defColMarker = {
-  width: 50,
+  width: 100,
   selected: false,
 };
 export default function colMarkers(state = [], action) {

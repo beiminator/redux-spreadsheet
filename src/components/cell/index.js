@@ -5,11 +5,15 @@ import {
   selectCell,
   setFocus,
   setValue,
+  cellDimensions,
 } from "../../model";
 import CellComponent from "./cell";
 
 function Cell({ row, col }) {
   const cell = useSelector((state) => selectCell(state, { row, col }));
+  const dimensions = useSelector((state) =>
+    cellDimensions(state, { row, col })
+  );
   const getFocus = useSelector(currentFocus);
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -25,7 +29,7 @@ function Cell({ row, col }) {
   };
   return (
     <CellComponent
-      model={cell}
+      model={{ ...cell, height: dimensions.height, width: dimensions.width }}
       handleClick={handleClick}
       handleDoubleClick={handleDoubleClick}
       handleChange={handleChange}

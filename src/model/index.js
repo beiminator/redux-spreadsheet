@@ -33,6 +33,12 @@ export default combineReducers({ grid });
 export const selectRows = (state) => state.grid.rows;
 export const selectCell = (state, { row, col }) =>
   state.grid.rows[row].cols[col];
+export const cellDimensions = (state, { row, col }) => ({
+  height: state.grid.rowMarkers[row].height,
+  width: state.grid.colMarkers[col].width,
+});
+export const rowHeights = (state) =>
+  state.grid.rowMarkers.map((marker) => marker.height);
 export const currentFocus = (state) => state.grid.focus;
 export const maxCols = (state) =>
   typeof state.grid.colMarkers !== "undefined" &&
