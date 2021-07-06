@@ -5,6 +5,10 @@ import {
   addRowAfter,
   addColBefore,
   addColAfter,
+  removeRowBefore,
+  removeRowAfter,
+  removeColBefore,
+  removeColAfter,
 } from "../../model";
 import { NO_RANGE } from "../../model/range";
 import CommandBarComponent from "./command-bar";
@@ -59,10 +63,24 @@ function CommandBar() {
     if (currentRange === NO_RANGE) {
       alert(selRange);
     }
+    if (checkDirection() === 1) {
+      dispatch(removeRowBefore(currentRange.row1));
+    } else if (checkDirection() === 2) {
+      dispatch(removeColBefore(currentRange.col1));
+    } else {
+      alert(selValidRange);
+    }
   };
   const handleRemoveAfter = () => {
     if (currentRange === NO_RANGE) {
       alert(selRange);
+    }
+    if (checkDirection() === 1) {
+      dispatch(removeRowAfter(currentRange.row1));
+    } else if (checkDirection() === 2) {
+      dispatch(removeColAfter(currentRange.col1));
+    } else {
+      alert(selValidRange);
     }
   };
   return (

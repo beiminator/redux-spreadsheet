@@ -28,6 +28,22 @@ export const addColBefore = (col) => ({
   type: actions.ADD_COL_BEFORE,
   payload: { col },
 });
+export const removeRowAfter = (row) => ({
+  type: actions.REMOVE_ROW_AFTER,
+  payload: { row },
+});
+export const removeColAfter = (col) => ({
+  type: actions.REMOVE_COL_AFTER,
+  payload: { col },
+});
+export const removeRowBefore = (row) => ({
+  type: actions.REMOVE_ROW_BEFORE,
+  payload: { row },
+});
+export const removeColBefore = (col) => ({
+  type: actions.REMOVE_COL_BEFORE,
+  payload: { col },
+});
 export const initData = (rows, cols) => ({
   type: actions.INIT_GRID,
   payload: { rows, cols },

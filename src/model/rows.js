@@ -53,23 +53,28 @@ const setValue = (state, { row, col, value }) => {
     ...state.slice(row + 1),
   ];
 };
-const setSelected = (state, { row, col, selected }) => {
-  return [
-    ...state.slice(0, row),
-    {
-      ...state[row],
-      cols: [
-        ...state[row].cols.slice(0, col),
-        { ...state[row].cols[col], selected },
-        ...state[row].cols.slice(col + 1),
-      ],
-    },
-    ...state.slice(row + 1),
-  ];
-};
+
 export default function rows(state = [], action) {
   const { type, payload } = action;
   switch (type) {
+    case actions.REMOVE_COL_BEFORE:
+      return state.map((rowItem) => {
+        return {
+          ...rowItem,
+          cols: rowItem.cols.filter((colItem, col) => col !== payload.col - 1),
+        };
+      });
+    case actions.REMOVE_COL_AFTER:
+      return state.map((rowItem) => {
+        return {
+          ...rowItem,
+          cols: rowItem.cols.filter((colItem, col) => col !== payload.col + 1),
+        };
+      });
+    case actions.REMOVE_ROW_BEFORE:
+      return state.filter((rowItem, row) => row !== payload.row - 1);
+    case actions.REMOVE_ROW_AFTER:
+      return state.filter((rowItem, row) => row !== payload.row + 1);
     case actions.ADD_COL_BEFORE:
       return state.map((rowItem) => {
         return {

@@ -18,6 +18,10 @@ export default function rowMarkers(state = [], action) {
         defRowMarker,
         ...state.slice(payload.row + 1),
       ];
+    case actions.REMOVE_ROW_BEFORE:
+      return state.filter((rowItem, row) => row !== payload.row - 1);
+    case actions.REMOVE_ROW_AFTER:
+      return state.filter((rowItem, row) => row !== payload.row + 1);
     case actions.SELECT_CELL:
     case actions.SELECT_RANGE:
     case actions.UNSELECT_RANGE:

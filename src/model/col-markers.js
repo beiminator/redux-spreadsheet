@@ -18,6 +18,10 @@ export default function colMarkers(state = [], action) {
         defColMarker,
         ...state.slice(payload.col + 1),
       ];
+    case actions.REMOVE_COL_BEFORE:
+      return state.filter((colItem, col) => col !== payload.col - 1);
+    case actions.REMOVE_COL_AFTER:
+      return state.filter((colItem, col) => col !== payload.col + 1);
     case actions.SELECT_CELL:
     case actions.SELECT_RANGE:
     case actions.UNSELECT_RANGE:
