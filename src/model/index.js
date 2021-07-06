@@ -20,6 +20,14 @@ export const addColAfter = (col) => ({
   type: actions.ADD_COL_AFTER,
   payload: { col },
 });
+export const addRowBefore = (row) => ({
+  type: actions.ADD_ROW_BEFORE,
+  payload: { row },
+});
+export const addColBefore = (col) => ({
+  type: actions.ADD_COL_BEFORE,
+  payload: { col },
+});
 export const initData = (rows, cols) => ({
   type: actions.INIT_GRID,
   payload: { rows, cols },

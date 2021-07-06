@@ -6,11 +6,17 @@ const defColMarker = {
 export default function colMarkers(state = [], action) {
   const { type, payload } = action;
   switch (type) {
-    case actions.ADD_COL_AFTER:
+    case actions.ADD_COL_BEFORE:
       return [
         ...state.slice(0, payload.col),
         defColMarker,
         ...state.slice(payload.col),
+      ];
+    case actions.ADD_COL_AFTER:
+      return [
+        ...state.slice(0, payload.col + 1),
+        defColMarker,
+        ...state.slice(payload.col + 1),
       ];
     case actions.SELECT_CELL:
     case actions.SELECT_RANGE:

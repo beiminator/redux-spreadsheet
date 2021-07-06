@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/sheet";
+import WorkArea from "./components/work-area";
 import { Provider } from "react-redux";
 import store from "./model/store";
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <WorkArea />
   </Provider>,
   document.getElementById("root")
 );

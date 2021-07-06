@@ -8,6 +8,9 @@ import rootReducer, {
   setValue,
   markCellAsSelected,
   markRangeAsNotSelected,
+  markRangeAsSelected,
+  addColBefore,
+  addRowBefore,
 } from ".";
 import { NO_FOCUS } from "./focus";
 import { NO_RANGE } from "./range";
@@ -82,6 +85,27 @@ describe("Spreadsheet App", () => {
     expect(state.grid.colMarkers[0]).toBe(beforeState.grid.colMarkers[0]);
     expect(state.grid.colMarkers[2]).toBe(beforeState.grid.colMarkers[1]);
   });
+  it("should add a column before first", () => {
+    // given
+    const rows = 3;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState = rootReducer(undefined, prepare);
+    const action = addColBefore(0);
+    const expectedCols = 3;
+
+    // when
+    const state = rootReducer(beforeState, action);
+    // then
+    expect(state.grid.rows[0].cols.length).toBe(expectedCols);
+    expect(state.grid.rows[0].cols[1]).toBe(beforeState.grid.rows[0].cols[0]);
+    expect(state.grid.rows[0].cols[2]).toBe(beforeState.grid.rows[0].cols[1]);
+    expect(state.grid.rows[1].cols.length).toBe(expectedCols);
+    expect(state.grid.rows[2].cols.length).toBe(expectedCols);
+    expect(state.grid.colMarkers.length).toBe(expectedCols);
+    expect(state.grid.colMarkers[1]).toBe(beforeState.grid.colMarkers[0]);
+    expect(state.grid.colMarkers[2]).toBe(beforeState.grid.colMarkers[1]);
+  });
   it("should add a row after 1st", () => {
     // given
     const rows = 2;
@@ -101,6 +125,37 @@ describe("Spreadsheet App", () => {
     expect(state.grid.rows[2]).toEqual(beforeState.grid.rows[1]);
     expect(state.grid.rowMarkers.length).toBe(expectedRows);
     expect(state.grid.rowMarkers[0]).toBe(beforeState.grid.rowMarkers[0]);
+    expect(state.grid.rowMarkers[2]).toBe(beforeState.grid.rowMarkers[1]);
+  });
+  it("should add a row before 1st", () => {
+    // given
+    const rows = 2;
+    const cols = 2;
+    const prepare = initData(rows, cols);
+    const beforeState1 = rootReducer(undefined, prepare);
+    const row1 = 0;
+    const col1 = 0;
+    const row2 = 0;
+    const col2 = 1;
+    const selectCell = markRangeAsSelected(row1, col1, row2, col2);
+    const beforeState = rootReducer(beforeState1, selectCell);
+    const expectedRange = { row1: 1, col1: 0, row2: 1, col2: 1 };
+    const expectedRows = 3;
+    const action = addRowBefore(0);
+
+    // when
+
+    // console.log(JSON.stringify(beforeState.grid.rows));
+    const state = rootReducer(beforeState, action);
+    // console.log(JSON.stringify(state.grid.rows));
+
+    // then
+    expect(state.grid.range).toEqual(expectedRange);
+    expect(state.grid.rows.length).toBe(expectedRows);
+    expect(state.grid.rows[1]).toBe(beforeState.grid.rows[0]);
+    expect(state.grid.rows[2]).toBe(beforeState.grid.rows[1]);
+    expect(state.grid.rowMarkers.length).toBe(expectedRows);
+    expect(state.grid.rowMarkers[1]).toBe(beforeState.grid.rowMarkers[0]);
     expect(state.grid.rowMarkers[2]).toBe(beforeState.grid.rowMarkers[1]);
   });
   it("should remove focus from a cell", () => {

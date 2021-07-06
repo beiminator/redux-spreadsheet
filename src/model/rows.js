@@ -70,6 +70,17 @@ const setSelected = (state, { row, col, selected }) => {
 export default function rows(state = [], action) {
   const { type, payload } = action;
   switch (type) {
+    case actions.ADD_COL_BEFORE:
+      return state.map((rowItem) => {
+        return {
+          ...rowItem,
+          cols: [
+            ...rowItem.cols.slice(0, payload.col),
+            { ...defCol, id: genId() },
+            ...rowItem.cols.slice(payload.col),
+          ],
+        };
+      });
     case actions.ADD_COL_AFTER:
       return state.map((rowItem) => {
         return {
@@ -81,6 +92,15 @@ export default function rows(state = [], action) {
           ],
         };
       });
+    case actions.ADD_ROW_BEFORE:
+      return [
+        ...state.slice(0, payload.row),
+        {
+          ...defRow,
+          cols: newRow(defCol, maxCols(state)),
+        },
+        ...state.slice(payload.row),
+      ];
     case actions.ADD_ROW_AFTER:
       return [
         ...state.slice(0, payload.row + 1),

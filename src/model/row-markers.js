@@ -6,11 +6,17 @@ const defRowMarker = {
 export default function rowMarkers(state = [], action) {
   const { type, payload } = action;
   switch (type) {
-    case actions.ADD_ROW_AFTER:
+    case actions.ADD_ROW_BEFORE:
       return [
         ...state.slice(0, payload.row),
         defRowMarker,
         ...state.slice(payload.row),
+      ];
+    case actions.ADD_ROW_AFTER:
+      return [
+        ...state.slice(0, payload.row + 1),
+        defRowMarker,
+        ...state.slice(payload.row + 1),
       ];
     case actions.SELECT_CELL:
     case actions.SELECT_RANGE:
