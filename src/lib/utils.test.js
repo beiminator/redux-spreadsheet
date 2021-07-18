@@ -1,4 +1,4 @@
-import { colRangeToString } from "./range";
+import { convertNumberToLetter } from "./utils";
 describe("Range Helper", () => {
   it("should convert a number into letter", () => {
     // given
@@ -12,9 +12,9 @@ describe("Range Helper", () => {
     const expectedString3 = "AA";
 
     // when
-    const res1 = colRangeToString(col1);
-    const res2 = colRangeToString(col2);
-    const res3 = colRangeToString(col3);
+    const res1 = convertNumberToLetter(col1);
+    const res2 = convertNumberToLetter(col2);
+    const res3 = convertNumberToLetter(col3);
 
     // then
     expect(res1).toBe(expectedString1);

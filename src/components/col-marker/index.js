@@ -1,14 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import ColMarkerComponent from "./col-marker";
 import {
-  maxRows,
-  selectColMarker,
   markRangeAsSelected,
   markRangeAsNotSelected,
   removeFocus,
+} from "../../model/grid.slice";
+import {
+  selectColMarker,
+  maxRows,
   getRange,
   getFocus,
-} from "../../model";
+} from "../../model/selectors";
 function ColMarker({ text, col }) {
   const marker = useSelector((state) => selectColMarker(state, { col }));
   const totalRows = useSelector(maxRows);
@@ -16,9 +18,17 @@ function ColMarker({ text, col }) {
   const currentFocus = useSelector(getFocus);
   const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(removeFocus(currentFocus.row, currentFocus.col));
-    dispatch(markRangeAsNotSelected(csr.row1, csr.col1, csr.row2, csr.col2));
-    dispatch(markRangeAsSelected(0, col, totalRows - 1, col));
+    const { row1, col1, row2, col2 } = csr;
+    dispatch(removeFocus({ row: currentFocus.row, col: currentFocus.col }));
+    dispatch(markRangeAsNotSelected({ row1, col1, row2, col2 }));
+    dispatch(
+      markRangeAsSelected({
+        row1: 0,
+        col1: col,
+        row2: totalRows - 1,
+        col2: col,
+      })
+    );
   };
   return (
     <ColMarkerComponent

@@ -1,16 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getFocus,
   removeFocus,
-  selectCell,
   setFocus,
   setValue,
+  markCellAsSelected,
+  markRangeAsNotSelected,
+} from "../../model/grid.slice";
+import {
+  getRange,
+  selectCell,
+  getFocus,
   cellDimensions,
   thereIsFocus,
-  markCellAsSelected,
-  getRange,
-  markRangeAsNotSelected,
-} from "../../model";
+} from "../../model/selectors";
 import CellComponent from "./cell";
 
 function Cell({ row, col }) {
@@ -24,18 +26,19 @@ function Cell({ row, col }) {
   const dispatch = useDispatch();
   const handleClick = () => {
     if (row !== currentFocus.row || col !== currentFocus.col)
-      dispatch(removeFocus(currentFocus.row, currentFocus.col));
+      dispatch(removeFocus({ row: currentFocus.row, col: currentFocus.col }));
     if (!gridHasFocus) {
-      dispatch(markRangeAsNotSelected(csr.row1, csr.col1, csr.row2, csr.col2));
-      dispatch(markCellAsSelected(row, col));
+      const { row1, col1, row2, col2 } = csr;
+      dispatch(markRangeAsNotSelected({ row1, col1, row2, col2 }));
+      dispatch(markCellAsSelected({ row, col }));
     }
   };
   const handleDoubleClick = () => {
-    dispatch(removeFocus(currentFocus.row, currentFocus.col));
-    dispatch(setFocus(row, col));
+    dispatch(removeFocus({ row: currentFocus.row, col: currentFocus.col }));
+    dispatch(setFocus({ row, col }));
   };
   const handleChange = (e) => {
-    dispatch(setValue(row, col, e.target.value));
+    dispatch(setValue({ row, col, value: e.target.value }));
   };
   return (
     <CellComponent

@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getRange,
   addRowBefore,
   addRowAfter,
   addColBefore,
@@ -9,8 +8,11 @@ import {
   removeRowAfter,
   removeColBefore,
   removeColAfter,
-} from "../../model";
-import { NO_RANGE } from "../../model/range";
+  NO_RANGE,
+  removeCurrentRow,
+  removeCurrentCol,
+} from "../../model/grid.slice";
+import { getRange } from "../../model/selectors";
 import CommandBarComponent from "./command-bar";
 
 function CommandBar() {
@@ -40,9 +42,9 @@ function CommandBar() {
       alert(selRange);
     }
     if (checkDirection() === 1) {
-      dispatch(addRowBefore(currentRange.row1));
+      dispatch(addRowBefore({ row: currentRange.row1 }));
     } else if (checkDirection() === 2) {
-      dispatch(addColBefore(currentRange.col1));
+      dispatch(addColBefore({ col: currentRange.col1 }));
     } else {
       alert(selValidRange);
     }
@@ -52,9 +54,9 @@ function CommandBar() {
       alert(selRange);
     }
     if (checkDirection() === 1) {
-      dispatch(addRowAfter(currentRange.row1));
+      dispatch(addRowAfter({ row: currentRange.row1 }));
     } else if (checkDirection() === 2) {
-      dispatch(addColAfter(currentRange.col1));
+      dispatch(addColAfter({ col: currentRange.col1 }));
     } else {
       alert(selValidRange);
     }
@@ -64,9 +66,21 @@ function CommandBar() {
       alert(selRange);
     }
     if (checkDirection() === 1) {
-      dispatch(removeRowBefore(currentRange.row1));
+      dispatch(removeRowBefore({ row: currentRange.row1 }));
     } else if (checkDirection() === 2) {
-      dispatch(removeColBefore(currentRange.col1));
+      dispatch(removeColBefore({ col: currentRange.col1 }));
+    } else {
+      alert(selValidRange);
+    }
+  };
+  const handleRemoveCurrent = () => {
+    if (currentRange === NO_RANGE) {
+      alert(selRange);
+    }
+    if (checkDirection() === 1) {
+      dispatch(removeCurrentRow({ row: currentRange.row1 }));
+    } else if (checkDirection() === 2) {
+      dispatch(removeCurrentCol({ col: currentRange.col1 }));
     } else {
       alert(selValidRange);
     }
@@ -76,9 +90,9 @@ function CommandBar() {
       alert(selRange);
     }
     if (checkDirection() === 1) {
-      dispatch(removeRowAfter(currentRange.row1));
+      dispatch(removeRowAfter({ row: currentRange.row1 }));
     } else if (checkDirection() === 2) {
-      dispatch(removeColAfter(currentRange.col1));
+      dispatch(removeColAfter({ col: currentRange.col1 }));
     } else {
       alert(selValidRange);
     }
@@ -88,6 +102,7 @@ function CommandBar() {
       handleAddBefore={handleAddBefore}
       handleAddAfter={handleAddAfter}
       handleRemoveBefore={handleRemoveBefore}
+      handleRemoveCurrent={handleRemoveCurrent}
       handleRemoveAfter={handleRemoveAfter}
     />
   );

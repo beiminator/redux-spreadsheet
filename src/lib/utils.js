@@ -1,10 +1,9 @@
 const START_CHAR = 65;
 const NUM_OF_LETTERS = 26;
-export const getAlphaColumn = (i) => {
-  return String.fromCharCode(START_CHAR + i);
-};
 
-export const colRangeToString = (num) => {
+let counter, currentTime;
+
+export const convertNumberToLetter = (num) => {
   let s = "",
     t;
 
@@ -28,14 +27,15 @@ export function convertLetterToNumber(str) {
   return out;
 }
 
-function numToSSColumn(num) {
-  let s = "",
-    t;
-
-  while (num > 0) {
-    t = (num - 1) % 26;
-    s = String.fromCharCode(65 + t) + s;
-    num = ((num - t) / 26) | 0;
+export const genCellId = () => {
+  const time = new Date().getTime();
+  let padded = "000";
+  if (currentTime === time) {
+    counter++;
+    padded = ("" + counter).padStart(3, "0");
+  } else {
+    counter = 0;
+    currentTime = time;
   }
-  return s || undefined;
-}
+  return "" + currentTime + "_" + padded;
+};

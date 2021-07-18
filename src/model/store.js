@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from ".";
+import rootReducer from "./grid.slice";
 
 const store = configureStore({ reducer: rootReducer });
 export default store;

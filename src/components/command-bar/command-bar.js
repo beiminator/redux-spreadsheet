@@ -2,6 +2,7 @@ function CommandBar({
   handleAddBefore,
   handleAddAfter,
   handleRemoveBefore,
+  handleRemoveCurrent,
   handleRemoveAfter,
 }) {
   return (
@@ -10,6 +11,7 @@ function CommandBar({
       <button onClick={handleAddBefore}>Add Before</button>
       <button onClick={handleAddAfter}>Add After</button>
       <button onClick={handleRemoveBefore}>Remove Before</button>
+      <button onClick={handleRemoveCurrent}>Remove Current</button>
       <button onClick={handleRemoveAfter}>Remove After</button>
     </div>
   );
